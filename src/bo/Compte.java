@@ -1,12 +1,17 @@
 package bo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Compte {
     private int id;
     private double solde;
+    List<Operation> operations;
 
     public Compte(int id, double solde) {
         this.id = id;
         this.solde = solde;
+        operations = new ArrayList();
     }
 
     public void versement(double montant){
