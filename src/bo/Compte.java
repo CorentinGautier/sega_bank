@@ -8,6 +8,10 @@ public abstract class Compte {
     private double solde;
     List<Operation> operations;
 
+    public Compte(){
+
+    }
+
     public Compte(int id, double solde) {
         this.id = id;
         this.solde = solde;
@@ -15,10 +19,10 @@ public abstract class Compte {
     }
 
     public void versement(double montant){
-
+        setSolde(getSolde()+montant);
     }
     public void retrait(double montant){
-
+        setSolde(getSolde()-montant);
     }
 
     public int getId() {
@@ -41,7 +45,7 @@ public abstract class Compte {
         return solde;
     }
 
-    public void setSolde(float solde) {
+    public void setSolde(double solde) {
         this.solde = solde;
     }
 }
