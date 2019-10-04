@@ -5,10 +5,12 @@ public class Agence {
     private int code;
     private String adresse;
 
-    public Agence(int id, int code, String adresse) {
-        this.id = id;
+    public Agence(int code, String adresse) {
         this.code = code;
         this.adresse = adresse;
+    }
+
+    public Agence() {
     }
 
     public int getId() {
