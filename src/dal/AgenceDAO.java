@@ -12,7 +12,6 @@ public class AgenceDAO implements IDAO<Long, Agence>{
     private static final String REMOVE_QUERY = "DELETE * FROM AGENCES WHERE id= ? ";
     private static  final String FIND_QUERY = "SELECT * from AGENCES Where id = ?";
 
-
     @Override
     public void create(Agence agence) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = PersistanceManager.getConnection();
@@ -23,7 +22,7 @@ public class AgenceDAO implements IDAO<Long, Agence>{
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
-                        agence.setId(rs.getInt(1));
+                        agence.setId(rs.getInt("id"));
                     }
                 }
             }

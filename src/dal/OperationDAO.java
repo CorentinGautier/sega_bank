@@ -19,8 +19,8 @@ public class OperationDAO implements IDAO<Long, Operation>{
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
             try (PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, object.getAgence().getId());
-                ps.setInt(2, object.getCompte().getId());
+                ps.setInt(1, object.getIdAgence());
+                ps.setInt(2, object.getIdCompte());
                 ps.setInt(3, object.getType().getVal());
                 ps.setDouble(4, object.getMontant());
                 ps.executeUpdate();
@@ -50,8 +50,8 @@ public class OperationDAO implements IDAO<Long, Operation>{
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
             try (PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY)) {
-                ps.setInt(1, object.getAgence().getId());
-                ps.setInt(2, object.getCompte().getId());
+                ps.setInt(1, object.getIdAgence());
+                ps.setInt(2, object.getIdCompte());
                 ps.setInt(3, object.getType().getVal());
                 ps.setDouble(4, object.getMontant());
                 ps.executeUpdate();
@@ -84,11 +84,9 @@ public class OperationDAO implements IDAO<Long, Operation>{
                         while(rs.next()){
                             Operation operation = new Operation();
                             operation.setId(rs.getInt("id"));
-                            /*
-                            operation.setAgence(operation.getAgence().setId(rs.getInt("agence")));
-                            operation.setCompte(rs.getString("compte"));
+                            operation.setIdAgence(rs.getInt("agence"));
+                            operation.setIdCompte(rs.getInt("compte"));
                             operation.setType(rs.getInt("type"));
-                            */
                             operation.setMontant(rs.getDouble("montant"));
                             list.add(operation);
                         }
