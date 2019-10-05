@@ -9,10 +9,10 @@ import java.util.List;
 
 public class OperationDAO implements IDAO<Long, Operation>{
 
-        private static final String INSERT_QUERY = "INSERT INTO OPERATION(agence, compte, type, montant) VALUES (?, ?, ? , ? )";
-        private static final String UPDATE_QUERY = "UPDATE OPERATION SET agence = ?, compte = ?, type = ?, montant = ? WHERE id = ?";
-        private static final String REMOVE_QUERY = "DELETE * FROM OPERATION WHERE id= ? ";
-        private static  final String FIND_QUERY = "SELECT * from OPERATION Where id = ?";
+        private static final String INSERT_QUERY = "INSERT INTO OPERATIONS(agence, compte, type, montant) VALUES (?, ?, ? , ? )";
+        private static final String UPDATE_QUERY = "UPDATE OPERATIONS SET agence = ?, compte = ?, type = ?, montant = ? WHERE id = ?";
+        private static final String REMOVE_QUERY = "DELETE * FROM OPERATIONS WHERE id= ? ";
+        private static  final String FIND_QUERY = "SELECT * from OPERATIONS Where id = ?";
 
     @Override
     public void create(Operation object) throws SQLException, IOException, ClassNotFoundException {

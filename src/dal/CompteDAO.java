@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompteDAO implements IDAO<Long, Compte>{
-    private static final String INSERT_QUERY = "INSERT INTO COMPTE(solde, agence) VALUES (?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE COMPTE SET code = ?, adresse = ? WHERE id = ?";
-    private static final String REMOVE_QUERY = "DELETE * FROM COMPTE WHERE id= ? ";
-    private static  final String FIND_QUERY = "SELECT * from COMPTE Where id = ?";
+    private static final String INSERT_QUERY = "INSERT INTO COMPTES(solde, agence) VALUES (?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE COMPTES SET code = ?, adresse = ? WHERE id = ?";
+    private static final String REMOVE_QUERY = "DELETE * FROM COMPTES WHERE id= ? ";
+    private static  final String FIND_QUERY = "SELECT * from COMPTES Where id = ?";
 
     @Override
     public void create(Compte object) throws SQLException, IOException, ClassNotFoundException {

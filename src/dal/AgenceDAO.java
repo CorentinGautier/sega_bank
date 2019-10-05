@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AgenceDAO implements IDAO<Long, Agence>{
-    private static final String INSERT_QUERY = "INSERT INTO AGENCE(code, adresse) VALUES (?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE AGENCE SET code = ?, adresse = ? WHERE id = ?";
-    private static final String REMOVE_QUERY = "DELETE * FROM AGENCE WHERE id= ? ";
-    private static  final String FIND_QUERY = "SELECT * from AGENCE Where id = ?";
+    private static final String INSERT_QUERY = "INSERT INTO AGENCES(code, adresse) VALUES (?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE AGENCES SET code = ?, adresse = ? WHERE id = ?";
+    private static final String REMOVE_QUERY = "DELETE * FROM AGENCES WHERE id= ? ";
+    private static  final String FIND_QUERY = "SELECT * from AGENCES Where id = ?";
 
 
     @Override
