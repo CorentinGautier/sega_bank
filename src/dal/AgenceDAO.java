@@ -12,18 +12,17 @@ public class AgenceDAO implements IDAO<Long, Agence>{
     private static final String REMOVE_QUERY = "DELETE * FROM AGENCES WHERE id= ? ";
     private static  final String FIND_QUERY = "SELECT * from AGENCES Where id = ?";
 
-
     @Override
     public void create(Agence agence) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
             try (PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, agence.getCode());
-                ps.setString(2, agence.getAdresse());
+                ps.setInt(2, agence.getCode());
+                ps.setString(3, agence.getAdresse());
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
-                        agence.setId(rs.getInt(1));
+                        agence.setId(rs.getInt("id"));
                     }
                 }
             }

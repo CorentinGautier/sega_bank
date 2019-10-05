@@ -2,81 +2,63 @@ package bo;
 
 public class Operation {
 
-
-    public enum Type {
-        RETRAIT (1),DEPOT(2);
-
-        private int val;
-
-        Type(int val) {
-            this.val = val;
-        }
-
-        public int getVal() {
-            return val;
-        }
-        public void setVal(int val) {
-            this.val = val;
-        }
-    }
-
     private int id;
 
     public int getId() {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Operation{" +
-                "id=" + id +
-                ", agence=" + agence +
-                ", compte=" + compte +
-                ", type=" + type +
-                ", montant=" + montant +
-                '}';
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
-    private Agence agence;
-    private Compte compte;
-    private Type type;
+    private int idAgence;
+    private int idCompte;
+    private int type;
     private double montant;
 
     public Operation() {
     }
 
-    public Operation(Agence agence, Compte compte, Type type, double montant) {
-        this.agence = agence;
-        this.compte = compte;
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "id=" + id +
+                ", idAgence=" + idAgence +
+                ", idCompte=" + idCompte +
+                ", type=" + type +
+                ", montant=" + montant +
+                '}';
+    }
+
+    public int getIdAgence() {
+        return idAgence;
+    }
+
+    public void setIdAgence(int idAgence) {
+        this.idAgence = idAgence;
+    }
+
+    public int getIdCompte() {
+        return idCompte;
+    }
+
+    public void setIdCompte(int idCompte) {
+        this.idCompte = idCompte;
+    }
+
+    public Operation(int idAgence, int idCompte, int type, double montant) {
+        this.idAgence = idAgence;
+        this.idCompte = idCompte;
         this.type = type;
         this.montant = montant;
     }
 
-    public Agence getAgence() {
-        return agence;
-    }
-
-    public void setAgence(Agence agence) {
-        this.agence = agence;
-    }
-
-    public Compte getCompte() {
-        return compte;
-    }
-
-    public void setCompte(Compte compte) {
-        this.compte = compte;
-    }
-
-    public Type getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(int type) {
         this.type = type;
     }
 
