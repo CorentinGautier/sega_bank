@@ -13,6 +13,15 @@ public class Agence {
     public Agence() {
     }
 
+    @Override
+    public String toString() {
+        return "Agence{" +
+                "id=" + id +
+                ", code=" + code +
+                ", adresse='" + adresse + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }
