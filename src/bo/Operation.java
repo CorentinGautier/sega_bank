@@ -26,6 +26,17 @@ public class Operation {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "id=" + id +
+                ", agence=" + agence +
+                ", compte=" + compte +
+                ", type=" + type +
+                ", montant=" + montant +
+                '}';
+    }
+
     public void setId(int id) {
         this.id = id;
     }

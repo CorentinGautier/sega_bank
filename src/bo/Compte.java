@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Compte {
+    @Override
+    public String toString() {
+        return "Compte{" +
+                "id=" + id +
+                ", solde=" + solde +
+                ", operations=" + operations +
+                '}';
+    }
+
     private int id;
     private double solde;
     List<Operation> operations;
@@ -31,14 +40,6 @@ public abstract class Compte {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Compte{" +
-                "id=" + id +
-                ", solde=" + solde +
-                '}';
     }
 
     public double getSolde() {

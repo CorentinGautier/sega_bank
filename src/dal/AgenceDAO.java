@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AgenceDAO implements IDAO<Long, Agence>{
-    private static final String INSERT_QUERY = "INSERT INTO AGENCE( code, adresse) VALUES (?, ?)";
+    private static final String INSERT_QUERY = "INSERT INTO AGENCE(code, adresse) VALUES (?, ?)";
     private static final String UPDATE_QUERY = "UPDATE AGENCE SET code = ?, adresse = ? WHERE id = ?";
     private static final String REMOVE_QUERY = "DELETE * FROM AGENCE WHERE id= ? ";
     private static  final String FIND_QUERY = "SELECT * from AGENCE Where id = ?";
@@ -18,8 +18,7 @@ public class AgenceDAO implements IDAO<Long, Agence>{
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
             try (PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, agence.getId());
-                ps.setInt(2, agence.getCode());
+                ps.setInt(1, agence.getCode());
                 ps.setString(2, agence.getAdresse());
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -49,7 +48,7 @@ public class AgenceDAO implements IDAO<Long, Agence>{
             try (PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY)) {
                 ps.setInt(1, agence.getId());
                 ps.setInt(2, agence.getCode());
-                ps.setString(2, agence.getAdresse());
+                ps.setString(3, agence.getAdresse());
                 ps.executeUpdate();
             }
         }
