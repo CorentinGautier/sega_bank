@@ -6,8 +6,8 @@ public class CompteSimple extends Compte{
     public CompteSimple(){
 
     }
-    public CompteSimple(int id, double solde) {
-        super(id, solde);
+    public CompteSimple(int id, double solde, int numAgence) {
+        super(id, solde, numAgence);
         this.decouvert = decouvert;
     }
 

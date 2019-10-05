@@ -6,8 +6,8 @@ public class ComptePayant extends Compte{
     public ComptePayant(){
 
     }
-    public ComptePayant(int id, double solde) {
-        super(id, solde);
+    public ComptePayant(int id, double solde, int numAgence) {
+        super(id, solde, numAgence);
     }
 
     @Override
