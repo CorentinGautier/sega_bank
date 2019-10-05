@@ -17,8 +17,8 @@ public class AgenceDAO implements IDAO<Long, Agence>{
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
             try (PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, agence.getCode());
-                ps.setString(2, agence.getAdresse());
+                ps.setInt(2, agence.getCode());
+                ps.setString(3, agence.getAdresse());
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {

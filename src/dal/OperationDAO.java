@@ -21,7 +21,7 @@ public class OperationDAO implements IDAO<Long, Operation>{
             try (PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, object.getIdAgence());
                 ps.setInt(2, object.getIdCompte());
-                ps.setInt(3, object.getType().getVal());
+                ps.setInt(3, object.getType());
                 ps.setDouble(4, object.getMontant());
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -52,7 +52,7 @@ public class OperationDAO implements IDAO<Long, Operation>{
             try (PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY)) {
                 ps.setInt(1, object.getIdAgence());
                 ps.setInt(2, object.getIdCompte());
-                ps.setInt(3, object.getType().getVal());
+                ps.setInt(3, object.getType());
                 ps.setDouble(4, object.getMontant());
                 ps.executeUpdate();
             }

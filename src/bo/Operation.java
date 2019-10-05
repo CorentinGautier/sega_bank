@@ -2,24 +2,6 @@ package bo;
 
 public class Operation {
 
-
-    public enum Type {
-        RETRAIT (1),DEPOT(2);
-
-        private int val;
-
-        Type(int val) {
-            this.val = val;
-        }
-
-        public int getVal() {
-            return val;
-        }
-        public void setVal(int val) {
-            this.val = val;
-        }
-    }
-
     private int id;
 
     public int getId() {
@@ -32,7 +14,7 @@ public class Operation {
 
     private int idAgence;
     private int idCompte;
-    private Type type;
+    private int type;
     private double montant;
 
     public Operation() {
@@ -65,14 +47,14 @@ public class Operation {
         this.idCompte = idCompte;
     }
 
-    public Operation(int idAgence, int idCompte, Type type, double montant) {
+    public Operation(int idAgence, int idCompte, int type, double montant) {
         this.idAgence = idAgence;
         this.idCompte = idCompte;
         this.type = type;
         this.montant = montant;
     }
 
-    public Type getType() {
+    public int getType() {
         return type;
     }
 
