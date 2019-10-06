@@ -1,11 +1,11 @@
-CREATE TABLE agence
+CREATE TABLE agences
 (
     id INT PRIMARY KEY NOT NULL auto_increment,
     code INT NOT NULL UNIQUE,
     adresse VARCHAR(255)
 );
 
-CREATE TABLE compte
+CREATE TABLE comptes
 (
     id INT PRIMARY KEY NOT NULL auto_increment,
     solde FLOAT NOT NULL,
@@ -13,10 +13,10 @@ CREATE TABLE compte
     type INT NOT NULL,
     CONSTRAINT fk_code_agence
         FOREIGN KEY (agence)
-        REFERENCES agence(code)
+        REFERENCES agences(code)
 );
 
-CREATE TABLE operation
+CREATE TABLE operations
 (
     id INT PRIMARY KEY NOT NULL auto_increment,
     agence INT NOT NULL,
@@ -26,20 +26,20 @@ CREATE TABLE operation
     date_action TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_code_agence
         FOREIGN KEY (agence)
-        REFERENCES agence(code),
+        REFERENCES agences(code),
     CONSTRAINT fk_id_compte
         FOREIGN KEY (compte)
-        REFERENCES compte(id)
+        REFERENCES comptes(id)
 );
 
-INSERT INTO agence (code, adresse)
+INSERT INTO agences (code, adresse)
  VALUES
  (44001, 'Nantes centre'),
  (44002, 'Nantes Rezé'),
  (44003, 'Guerande'),
  (75001, 'Paris');
 
- INSERT INTO compte (solde, agence, type)
+ INSERT INTO comptes (solde, agence, type)
  VALUES
  (0.00, 44001, 1),
  (1000.00, 44001, 3),
@@ -49,7 +49,7 @@ INSERT INTO agence (code, adresse)
  (100.00, 75001, 1),
  (50000.00, 750011, 2);
 
- INSERT INTO operation (agence, compte, type, montant, date_action)
+ INSERT INTO operations (agence, compte, type, montant, date_action)
  VALUES
  (44001, 1, 1, -20.00, CURRENT_TIMESTAMP),
  (75001, 7,1,-2.00, CURRENT_TIMESTAMP),
