@@ -63,7 +63,7 @@ public class CompteDAO implements IDAO<Integer, Compte>{
     }
 
     @Override
-    public Compte findBy(Integer id) throws SQLException, IOException, ClassNotFoundException {
+    public Compte findBy(int id) throws SQLException, IOException, ClassNotFoundException {
         Compte compte = null ;
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
@@ -108,14 +108,17 @@ public class CompteDAO implements IDAO<Integer, Compte>{
                             compte = new ComptePayant();
                             compte.setId(rs.getInt("id"));
                             compte.setSolde((rs.getInt("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }else if(rs.getInt("type") == 2) {
                             compte = new CompteEpargne();
                             compte.setId(rs.getInt("id"));
                             compte.setSolde((rs.getInt("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }else{
                             compte = new CompteSimple();
                             compte.setId(rs.getInt("id"));
                             compte.setSolde((rs.getInt("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }
                         list.add(compte);
                     }

@@ -47,10 +47,10 @@ public class App {
 
         switch ( response ) {
             case 1:
-                connect();
+                connection();
                 break;
-            /*case 2:
-                updateContact();
+            case 2:
+                creerCompte();
                 break;
             case 3:
                 voirListeComptes();
@@ -58,7 +58,7 @@ public class App {
         }
     }
 
-    private static void connect() {
+    private static void connection() {
         int id;
         System.out.print( "Entrez votre identifiant : " );
         Compte c;
@@ -73,6 +73,8 @@ public class App {
             }
         } catch ( InputMismatchException e ) {
             id = -1;
+            System.out.print( "Identifiant invalide, vous allez etre rediriger vers l'accueil\n" );
+            SegaBankMainMenu();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -281,28 +283,66 @@ public class App {
         System.out.print( "Entrez votre choix : " );
     }
 
+    private static void creerCompte() {
+        /*int type;
+        System.out.print( "Entrez le type de compte que vous voulez (1.Compte simple, 2.Compte epargne, 3.Compte payant) : " );
+        Compte c;
+        try {
+            type = sc.nextInt();
+            if (type!=1 || type!=2 ||type!=3) {
+                System.out.print( "Type de compte invalide, vous allez etre rediriger vers l'accueil\n" );
+                SegaBankMainMenu();
+            } else {
+                gestionCompte(c);
+            }
+        } catch ( InputMismatchException e ) {
+            type = -1;
+            System.out.print( "Type de compte invalide, vous allez etre rediriger vers l'accueil\n" );
+            SegaBankMainMenu();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            sc.nextLine();
+        }*/
+    }
+
     public static void voirListeComptes() {
-        System.out.println( "======================================" );
-        System.out.printf( "===== COMPTE NUMERO %s \n", c.getId() );
-        System.out.printf( "===== SOLDE : %s \n", c.getSolde() );
-        System.out.printf( "===== AGENCE : %s \n", c.getNumAgence() );
-        if(c instanceof CompteSimple) {
-            System.out.println( "===== TYPE : Compte simple" );
-        } else if(c instanceof CompteEpargne) {
-            System.out.println( "===== TYPE : Compte epargne" );
-        } else {
-            System.out.println( "===== TYPE : Compte payant" );
+        String mdp;
+        System.out.print( "Entrez votre mot de passe administrateur : " );
+        try {
+            mdp = sc.nextLine();
+            if (mdp.equals("admin")) {
+                List<Compte> listComptes = compteDao.findAll();
+                for (Compte c: listComptes) {
+                    if(c instanceof CompteSimple) {
+                        System.out.println( "COMPTE : " + c.getId() + " / TYPE : Compte simple / SOLDE : " + c.getSolde() + " / AGENCE : " + c.getNumAgence());
+                    } else if(c instanceof CompteEpargne) {
+                        System.out.println( "COMPTE : " + c.getId() + " / TYPE : Compte epargne / SOLDE : " + c.getSolde() + " / AGENCE : " +c .getNumAgence());
+                    } else {
+                        System.out.println( "COMPTE : " + c.getId() + " / TYPE : Compte payant / SOLDE : " + c.getSolde() + " / AGENCE : " + c.getNumAgence());
+                    }
+                    
+                }
+            } else {
+                System.out.print( "Mot de pass invalide, vous allez etre rediriger vers l'accueil\n" );
+                SegaBankMainMenu();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            sc.nextLine();
         }
-        System.out.println( "======================================" );
-        System.out.println( "1 - Se connecter à un compte" );
-        System.out.println( "2 - Se connecter à un compte" );
-        System.out.println( "3 - Se connecter à un compte" );
-        System.out.println( "4 - Quitter" );
-        System.out.print( "Entrez votre choix : " );
     }
 
     public static void main( String... args ) {
-
         SegaBankMainMenu();
         */
     }
