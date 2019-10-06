@@ -24,11 +24,13 @@ public abstract class Compte {
         numAgence = numAgence;
     }
 
-    public void versement(double montant){
+    public boolean versement(double montant){
         setSolde(getSolde()+montant);
+        return true;
     }
-    public void retrait(double montant){
+    public boolean retrait(double montant){
         setSolde(getSolde()-montant);
+        return true;
     }
 
     public int getId() {

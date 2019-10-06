@@ -1,6 +1,7 @@
 import bo.*;
 import dal.CompteDAO;
 import dal.IDAO;
+import dal.OperationDAO;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,7 +21,6 @@ public class App {
     private static IDAO<Integer, Compte> compteDao = new CompteDAO();
 
     public static void SegaBankMainMenu() {
-/*
         int response;
         boolean first = true;
         do {
@@ -85,7 +85,7 @@ public class App {
             sc.nextLine();
         }
     }
-
+    /*
     private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
 
         boolean first = true;
@@ -261,6 +261,83 @@ public class App {
         if ( dspMenu ) {
             dspMainMenu();
         }
+    }*/
+    public static void modifSolde(Compte c, int typeModif){
+        //retrait c'est 1 de^pot c'est 2
+        IDAO<Integer, Operation> opDAO = new OperationDAO();
+        IDAO<Integer, Compte> cDAO = new CompteDAO();
+        Operation operation = new Operation();
+        if(typeModif == 1){
+            System.out.println("Indiquez le montant du retrait sur ce compte :");
+        }
+        else{
+            System.out.println("Indiquez le montant du versement sur ce compte :");
+        }
+        int montant = sc.nextInt();
+        sc.nextLine();
+        boolean modifPossible = true;
+        operation.setMontant(montant);
+        operation.setIdCompte(c.getId());
+        operation.setIdAgence(c.getNumAgence());
+        operation.setType(typeModif);
+
+        System.out.println(operation);
+        if(typeModif == 1){
+            if(c.retrait(montant)){
+                System.out.println("Le montant va être retiré");
+            }
+            else{
+                modifPossible = false;
+                System.out.println("Impossible de retirer ce montant !");
+            }
+        }
+        else{
+            if(c.versement(montant)){
+                System.out.println("Le montant va être versé");
+            }
+            else{
+                modifPossible =false;
+                System.out.println("Impossible de verser ce montant !");
+            }
+        }
+        if(modifPossible){
+            try {
+                cDAO.update(c);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                opDAO.create(operation);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Opération réussi");
+            gestionCompte(c);
+        }
+        else{
+            System.out.println("Voulez-vous tentez à nouveau l'opération ? Y-n");
+            String choix = sc.nextLine();
+            if(choix.toUpperCase().equals("Y")){
+                modifSolde(c,typeModif);
+            }
+            else{
+                gestionCompte(c);
+            }
+        }
+
+
+
+
+
     }
 
     public static void gestionCompte(Compte c) {
@@ -276,11 +353,41 @@ public class App {
             System.out.println( "===== TYPE : Compte payant" );
         }
         System.out.println( "======================================" );
-        System.out.println( "1 - Se connecter à un compte" );
-        System.out.println( "2 - Se connecter à un compte" );
-        System.out.println( "3 - Se connecter à un compte" );
-        System.out.println( "4 - Quitter" );
+        System.out.println( "1 - Déposer de l'argent" );
+        System.out.println( "2 - Retirer de l'argent" );
+        System.out.println( "3 - Modifier son compte" );
+        System.out.println( "4 - Modifier agence" );
+        System.out.println( "5 - Exporter les opérations d'un compte " );
+        System.out.println( "6 - Quitter" );
         System.out.print( "Entrez votre choix : " );
+        int choix = 0;
+        do{
+            try {
+                choix = sc.nextInt();
+                //sc.nextLine(); je sais pas pourquoi mais ce sc.nextLine() empêche d'accéder au menu
+            }catch (Exception e){
+                System.out.println("Veuillez entrer un chiffre");
+            }
+        }while(choix <0 && choix >6);
+
+        switch (choix){
+            case 1:
+                modifSolde(c,2);
+                break;
+            case 2 :
+                modifSolde(c,1);
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+
+        }
+
     }
 
     private static void creerCompte() {
@@ -346,7 +453,6 @@ public class App {
 
     public static void main( String... args ) {
         SegaBankMainMenu();
-        */
     }
 
 
