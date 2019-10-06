@@ -108,14 +108,17 @@ public class CompteDAO implements IDAO<Integer, Compte>{
                             compte = new ComptePayant();
                             compte.setId(rs.getInt("id"));
                             compte.setSolde((rs.getInt("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }else if(rs.getInt("type") == 2) {
                             compte = new CompteEpargne();
                             compte.setId(rs.getInt("id"));
                             compte.setSolde((rs.getInt("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }else{
                             compte = new CompteSimple();
                             compte.setId(rs.getInt("id"));
                             compte.setSolde((rs.getInt("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }
                         list.add(compte);
                     }

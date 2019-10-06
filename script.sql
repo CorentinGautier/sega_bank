@@ -49,13 +49,13 @@ INSERT INTO agences (code, adresse)
  (100.00, 75001, 1),
  (50000.00, 750011, 2);
 
- INSERT INTO operations (agence, compte, type, montant, date_action)
+ INSERT INTO operations (agence, compte, type, montant)
  VALUES
- (44001, 1, 1, -20.00, CURRENT_TIMESTAMP),
- (75001, 7,1,-2.00, CURRENT_TIMESTAMP),
- (44002, 5,2,-3.00, CURRENT_TIMESTAMP),
- (44003, 6,1,-50.00, CURRENT_TIMESTAMP),
- (75001, 4,1,-500.00, CURRENT_TIMESTAMP),
- (75001, 3,2,89.00, CURRENT_TIMESTAMP),
- (75001, 2,1,00.00, CURRENT_TIMESTAMP);
+ (44001, 1, 1, -20.00),
+ (75001, 7,1,-2.00),
+ (44002, 5,2,-3.00),
+ (44003, 6,1,-50.00),
+ (75001, 4,1,-500.00),
+ (75001, 3,2,89.00),
+ (75001, 2,1,00.00);
 
