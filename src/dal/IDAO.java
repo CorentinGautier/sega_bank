@@ -12,5 +12,6 @@ public interface IDAO<ID, E>{
     void update(E object) throws SQLException, IOException, ClassNotFoundException;
     E findBy(int id) throws SQLException, IOException, ClassNotFoundException;
     List<E> findAll() throws SQLException, IOException, ClassNotFoundException;
+    List<E> find(int id) throws SQLException, IOException, ClassNotFoundException;
 
 }
