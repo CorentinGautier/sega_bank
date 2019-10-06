@@ -127,4 +127,9 @@ public class CompteDAO implements IDAO<Integer, Compte>{
         }
         return list;
     }
+
+    @Override
+    public List<Compte> find(int id) throws SQLException, IOException, ClassNotFoundException {
+        return null;
+    }
 }

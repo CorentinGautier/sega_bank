@@ -92,4 +92,9 @@ public class AgenceDAO implements IDAO<Integer, Agence>{
         }
         return list;
     }
+
+    @Override
+    public List<Agence> find(int id) throws SQLException, IOException, ClassNotFoundException {
+        return null;
+    }
 }
