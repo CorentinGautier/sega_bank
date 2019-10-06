@@ -1,15 +1,13 @@
 package bo;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Operation implements Serializable {
 private static final String BACKUPS_DIR = "./ressources/backups/";
@@ -31,29 +29,27 @@ private static final String BACKUPS_DIR = "./ressources/backups/";
     public Operation() {
     }
 
-    public void ExporteCSVOperation(ArrayList ArrayListOperation) throws FileNotFoundException {
+    public void ExporteCSVOperation(List<Operation> listOperation) throws FileNotFoundException {
         System.out.println(" ------ sauvegarde ------- ");
-        System.out.println(ArrayListOperation);
+        System.out.println(listOperation);
         Path BkpPath = Paths.get(BACKUPS_DIR);
         if (!Files.isDirectory(BkpPath)) {
             try {
                 Files.createDirectory(BkpPath);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         String bkpFileName = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").format(new Date()) + ".csv";
         Path file = Paths.get(BACKUPS_DIR + "Operations_"+bkpFileName);
-        try (ObjectOutputStream oss = new ObjectOutputStream(Files.newOutputStream(file))) {
-            for(int i= 0; i<ArrayListOperation.size(); i++){
-                System.out.println(ArrayListOperation.size()); // retourne 2
-                for(var item : ArrayListOperation){
-                }
-           //     oss.writeObject(ArrayListOperation.get(i).toString()); // affiche toutes les valeurs dans une même case
-                    oss.writeObject(ArrayListOperation.get(i).toString());
-
-
-            }
+        try (FileOutputStream oss = new FileOutputStream(file.toFile())) {
+            oss.write(String.format("%s;%s;%s;%s;%s\n","id","idAgence","idCompte","type","montant").getBytes());
+            for(int i= 0; i<listOperation.size(); i++){
+                System.out.println(listOperation.size()); // retourne 2
+                Operation op = listOperation.get(i);
+               oss.write(String.format("%d;%d;%d;%d;%f\n",op.getId(),op.getIdAgence(),op.getIdCompte(),op.getType(),op.getMontant()).getBytes());
+                 }
         } catch (IOException e) {
             e.printStackTrace();
         }
