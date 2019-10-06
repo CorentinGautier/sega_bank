@@ -1,6 +1,6 @@
 package bo;
 
-public class ComptePayant extends Compte{
+public class ComptePayant extends Compte {
     private static final double COMMISSION = 0.05;
 
     public ComptePayant(){

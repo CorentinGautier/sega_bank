@@ -1,4 +1,5 @@
 import bo.*;
+import dal.AgenceDAO;
 import dal.CompteDAO;
 import dal.IDAO;
 import dal.OperationDAO;
@@ -15,6 +16,7 @@ public class App {
     private static Scanner sc = new Scanner(System.in);
     private static IDAO<Integer, Compte> compteDao = new CompteDAO();
     private static IDAO<Integer, Operation> opDAO = new OperationDAO();
+    private static IDAO<Integer, Agence> agDAO = new AgenceDAO();
 
     public static void SegaBankMainMenu() {
         int response;
@@ -51,6 +53,8 @@ public class App {
             case 3:
                 voirListeComptes();
                 break;
+            case 4 :
+                break;
         }
     }
 
@@ -71,11 +75,7 @@ public class App {
             id = -1;
             System.out.print("Identifiant invalide, vous allez etre rediriger vers l'accueil\n");
             SegaBankMainMenu();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException| ClassNotFoundException | IOException e) {
             e.printStackTrace();
         } finally {
             sc.nextLine();
@@ -117,21 +117,13 @@ public class App {
         if (modifPossible) {
             try {
                 compteDao.update(c);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (ClassNotFoundException | SQLException | IOException e) {
                 e.printStackTrace();
             }
 
             try {
                 opDAO.create(operation);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch ( IOException e) {
+            } catch (ClassNotFoundException | SQLException | IOException e) {
                 e.printStackTrace();
             }
             System.out.println("Opération réussi");
@@ -176,7 +168,7 @@ public class App {
         do {
             try {
                 choix = sc.nextInt();
-                //sc.nextLine(); je sais pas pourquoi mais ce sc.nextLine() empêche d'accéder au menu
+                sc.nextLine(); //je sais pas pourquoi mais ce sc.nextLine() empêche d'accéder au menu
             } catch (Exception e) {
                 System.out.println("Veuillez entrer un chiffre");
             }
@@ -190,22 +182,27 @@ public class App {
                 modifSolde(c, 1);
                 break;
             case 3:
-                System.out.println("A venir");
-                SegaBankMainMenu();
+                System.out.println("Fonctionnalité non implémenté !");
+                gestionCompte(c);
                 break;
             case 4:
-                System.out.println("A venir");
-                SegaBankMainMenu();
+                System.out.println("Fonctionnalité non implémenté !");
+                gestionCompte(c);
                 break;
             case 5:
-                exportCsv();
+                exportCsv(c);
                 break;
             case 6:
                 SegaBankMainMenu();
                 break;
             case 7:
-             imposerInteret( c);
-                SegaBankMainMenu();
+                if(c instanceof  CompteEpargne){
+                    imposerInteret( c);
+                }
+                else{
+                    gestionCompte(c);
+                }
+                //SegaBankMainMenu();
                 break;
         }
     }
@@ -248,14 +245,8 @@ public class App {
             type = -1;
             System.out.print("Type de compte invalide, vous allez etre rediriger vers l'accueil\n");
             SegaBankMainMenu();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            sc.nextLine();
         }
     }
 
@@ -281,14 +272,8 @@ public class App {
                 System.out.print("Mot de pass invalide, vous allez etre rediriger vers l'accueil\n");
                 SegaBankMainMenu();
             }
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            sc.nextLine();
         }
         SegaBankMainMenu();
     }
@@ -298,36 +283,30 @@ public class App {
     }
 
 
-    public static void exportCsv(){
+    public static void exportCsv(Compte c){
         int id;
         Operation operation = new Operation();
-        System.out.print("Entrez l'id du compte dont vous voulez voir les opérations");
         try {
-            id = sc.nextInt();
-                List<Operation> list = opDAO.find(id);
-                operation.ExporteCSVOperation(list);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }catch (SQLException  e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            id = c.getId();
+            List<Operation> list = opDAO.find(id);
+            operation.ExporteCSVOperation(list);
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Exportation Réussie !");
+        gestionCompte(c);
     }
 
     public static void imposerInteret(Compte c)  {
         if(c instanceof CompteEpargne){
             System.out.println("Quel est le nouveau taux ?");
-          int taux =  sc.nextInt();
-          ((CompteEpargne) c).setTauxInteret(taux);
+            double taux =  sc.nextDouble();
+            sc.nextLine();
+            ((CompteEpargne) c).setTauxInteret(taux);
             ((CompteEpargne) c).calculInteret();
             try {
                 compteDao.update(c);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (SQLException | ClassNotFoundException | IOException  e) {
                 e.printStackTrace();
             }
         }else{
