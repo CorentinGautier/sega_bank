@@ -20,7 +20,7 @@ public class App {
     private static IDAO<Integer, Compte> compteDao = new CompteDAO();
 
     public static void SegaBankMainMenu() {
-
+/*
         int response;
         boolean first = true;
         do {
@@ -54,7 +54,7 @@ public class App {
                 break;
             case 3:
                 voirListeComptes();
-                break;*/
+                break;
         }
     }
 
@@ -84,7 +84,7 @@ public class App {
         }
     }
 
-    /*private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
+    private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
 
         boolean first = true;
         int response;
@@ -259,7 +259,7 @@ public class App {
         if ( dspMenu ) {
             dspMainMenu();
         }
-    }*/
+    }
 
     public static void gestionCompte(Compte c) {
         System.out.println( "======================================" );
@@ -304,5 +304,8 @@ public class App {
     public static void main( String... args ) {
 
         SegaBankMainMenu();
+        */
     }
+
+
 }

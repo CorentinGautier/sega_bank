@@ -60,12 +60,12 @@ public class OperationDAO implements IDAO<Long, Operation>{
     }
 
     @Override
-        public Operation findBy(Long aLong) throws SQLException, IOException, ClassNotFoundException {
+        public Operation findBy(int id) throws SQLException, IOException, ClassNotFoundException {
         Operation operation = null ;
             Connection connection = PersistanceManager.getConnection();
             if(connection != null){
                 try (PreparedStatement ps = connection.prepareStatement(FIND_QUERY)) {
-                    ps.setLong(1,aLong);
+                    ps.setLong(1,id);
                     try(ResultSet rs = ps.executeQuery()){
                         operation.setId(rs.getInt("id"));
                     }
