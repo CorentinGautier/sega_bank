@@ -70,21 +70,23 @@ public class CompteDAO implements IDAO<Integer, Compte>{
             System.out.println("ok");
             try (PreparedStatement ps = connection.prepareStatement(FIND_QUERY)) {
                 ps.setLong(1,id);
-                System.out.println(ps);
                 try(ResultSet rs = ps.executeQuery()){
                     if( rs.next()) {
                         if(rs.getInt("type") == 3) {
                             compte = new ComptePayant();
                             compte.setId(rs.getInt("id"));
-                            compte.setSolde((rs.getInt("solde")));
+                            compte.setSolde((rs.getDouble("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }else if(rs.getInt("type") == 2) {
                             compte = new CompteEpargne();
                             compte.setId(rs.getInt("id"));
-                            compte.setSolde((rs.getInt("solde")));
+                            compte.setSolde((rs.getDouble("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }else{
                             compte = new CompteSimple();
                             compte.setId(rs.getInt("id"));
-                            compte.setSolde((rs.getInt("solde")));
+                            compte.setSolde((rs.getDouble("solde")));
+                            compte.setNumAgence((rs.getInt("agence")));
                         }
                     }
                 }

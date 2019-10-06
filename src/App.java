@@ -1,5 +1,7 @@
 import bo.*;
-/*
+import dal.CompteDAO;
+import dal.IDAO;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,6 +9,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -14,6 +17,7 @@ public class App {
 
 
     private static Scanner sc = new Scanner( System.in );
+    private static IDAO<Integer, Compte> compteDao = new CompteDAO();
 
     public static void SegaBankMainMenu() {
 
@@ -27,8 +31,10 @@ public class App {
             System.out.println( "============== SEGA BANK =============" );
             System.out.println( "======================================" );
             System.out.println( "1 - Se connecter à un compte" );
-            System.out.println( "2 - Quitter" );
-            System.out.print( "Identifiant : " );
+            System.out.println( "2 - Creer un compte" );
+            System.out.println( "3 - Voir la liste des comptes (seulement pour les administrateurs)" );
+            System.out.println( "4 - Quitter" );
+            System.out.print( "Entrez votre choix : " );
             try {
                 response = sc.nextInt();
             } catch ( InputMismatchException e ) {
@@ -37,29 +43,48 @@ public class App {
                 sc.nextLine();
             }
             first = false;
-        } while ( response < 1 || response > 2 );
+        } while ( response < 1 || response > 4 );
 
         switch ( response ) {
             case 1:
-                createContact();
+                connect();
                 break;
-            case 2:
+            /*case 2:
                 updateContact();
                 break;
+            case 3:
+                voirListeComptes();
+                break;*/
         }
     }
 
-    private static void sortContacts(boolean naturalSort) {
-
-        if ( naturalSort ) {
-            Collections.sort( book.getContacts() );
-        } else {
-            Collections.sort(book.getContacts(), new ContactEmailComparator() );
+    private static void connect() {
+        int id;
+        System.out.print( "Entrez votre identifiant : " );
+        Compte c;
+        try {
+            id = sc.nextInt();
+            c = compteDao.findBy(id);
+            if (c==null) {
+                System.out.print( "Identifiant invalide, vous allez etre rediriger vers l'accueil\n" );
+                SegaBankMainMenu();
+            } else {
+                gestionCompte(c);
+            }
+        } catch ( InputMismatchException e ) {
+            id = -1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            sc.nextLine();
         }
-        dspContacts( true );
     }
 
-    private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
+    /*private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
 
         boolean first = true;
         int response;
@@ -234,6 +259,46 @@ public class App {
         if ( dspMenu ) {
             dspMainMenu();
         }
+    }*/
+
+    public static void gestionCompte(Compte c) {
+        System.out.println( "======================================" );
+        System.out.printf( "===== COMPTE NUMERO %s \n", c.getId() );
+        System.out.printf( "===== SOLDE : %s \n", c.getSolde() );
+        System.out.printf( "===== AGENCE : %s \n", c.getNumAgence() );
+        if(c instanceof CompteSimple) {
+            System.out.println( "===== TYPE : Compte simple" );
+        } else if(c instanceof CompteEpargne) {
+            System.out.println( "===== TYPE : Compte epargne" );
+        } else {
+            System.out.println( "===== TYPE : Compte payant" );
+        }
+        System.out.println( "======================================" );
+        System.out.println( "1 - Se connecter à un compte" );
+        System.out.println( "2 - Se connecter à un compte" );
+        System.out.println( "3 - Se connecter à un compte" );
+        System.out.println( "4 - Quitter" );
+        System.out.print( "Entrez votre choix : " );
+    }
+
+    public static void voirListeComptes() {
+        System.out.println( "======================================" );
+        System.out.printf( "===== COMPTE NUMERO %s \n", c.getId() );
+        System.out.printf( "===== SOLDE : %s \n", c.getSolde() );
+        System.out.printf( "===== AGENCE : %s \n", c.getNumAgence() );
+        if(c instanceof CompteSimple) {
+            System.out.println( "===== TYPE : Compte simple" );
+        } else if(c instanceof CompteEpargne) {
+            System.out.println( "===== TYPE : Compte epargne" );
+        } else {
+            System.out.println( "===== TYPE : Compte payant" );
+        }
+        System.out.println( "======================================" );
+        System.out.println( "1 - Se connecter à un compte" );
+        System.out.println( "2 - Se connecter à un compte" );
+        System.out.println( "3 - Se connecter à un compte" );
+        System.out.println( "4 - Quitter" );
+        System.out.print( "Entrez votre choix : " );
     }
 
     public static void main( String... args ) {
@@ -241,4 +306,3 @@ public class App {
         SegaBankMainMenu();
     }
 }
-*/
