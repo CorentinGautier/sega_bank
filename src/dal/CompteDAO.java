@@ -63,7 +63,7 @@ public class CompteDAO implements IDAO<Integer, Compte>{
     }
 
     @Override
-    public Compte findBy(Integer id) throws SQLException, IOException, ClassNotFoundException {
+    public Compte findBy(int id) throws SQLException, IOException, ClassNotFoundException {
         Compte compte = null ;
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
