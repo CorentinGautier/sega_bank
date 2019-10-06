@@ -14,6 +14,7 @@ public class App {
 
     private static Scanner sc = new Scanner(System.in);
     private static IDAO<Integer, Compte> compteDao = new CompteDAO();
+    private static IDAO<Integer, Operation> opDAO = new OperationDAO();
 
     public static void SegaBankMainMenu() {
         int response;
@@ -81,187 +82,8 @@ public class App {
         }
     }
 
-    /*
-    private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
-
-        boolean first = true;
-        int response;
-        do {
-            if ( !first ) {
-                System.out.println( "Mauvais choix... merci de recommencer !" );
-            }
-            System.out
-                    .printf( "Sélectionner le genre du contact %s...%n", (!mandatory ? "(Tapez Entrée pour passer)" : "") );
-            System.out.println( "1 - Masculin" );
-            System.out.println( "2 - Feminin" );
-            try {
-                response = sc.nextInt();
-            } catch ( InputMismatchException e ) {
-                response = -1;
-            } finally {
-                sc.nextLine();
-            }
-            first = false;
-        } while ( mandatory && (response < 1 || response > 2) );
-        if ( !mandatory && response != 1 && response != 2 ) return null;
-        else return Contact.Gender.values()[response - 1];
-    }
-
-    private static void createContact() {
-
-        System.out.println( "======================================" );
-        System.out.println( "======== CREATION D'UN CONTACT =======" );
-        System.out.println( "======================================" );
-        Contact contact = new Contact();
-        System.out.print( "Entrez le nom : " );
-        contact.setName( sc.nextLine() );
-        System.out.print( "Entrez l'email : " );
-        contact.setEmail( sc.nextLine() );
-        contact.setGender( getGenderFromKeyboard( true ) );
-        book.getContacts().add( contact );
-        System.out.println( "Contact créé avec succès!" );
-        dspMainMenu();
-    }
-
-    private static void updateContact() {
-
-        System.out.println( "======================================" );
-        System.out.println( "====== MODIFICATION D'UN CONTACT =====" );
-        System.out.println( "======================================" );
-        System.out.println( "Choisissez le contact à modifier ..." );
-        boolean first = true;
-        int response, size = book.getContacts().size();
-        do {
-            if ( !first ) {
-                System.out.println( "Mauvais choix... merci de recommencer !" );
-            }
-            dspContacts( false );
-            System.out.print( "Votre choix : " );
-            try {
-                response = sc.nextInt();
-            } catch ( InputMismatchException e ) {
-                response = -1;
-            } finally {
-                sc.nextLine();
-            }
-            first =false;
-        } while ( response < 1 || response > size );
-
-        Contact contact = book.getContacts().get( (response - 1) );
-        System.out.printf( "======== MODIFICATION DE (%s) %n =======", contact.getName() );
-
-        System.out.printf( "Entrez le nom (%s): ", contact.getName() );
-        String name = sc.nextLine();
-        if ( name != null && !name.isEmpty() ) {
-            contact.setName( name );
-        }
-        System.out.printf( "Entrez l'email (%s): ", contact.getEmail() );
-        String email = sc.nextLine();
-        if ( email != null && !email.isEmpty() ) {
-            contact.setEmail( email );
-        }
-        System.out.printf( "Entrez le genre (%s): ", contact.getGender().getLabel() );
-        Contact.Gender gender = getGenderFromKeyboard( false );
-        if ( gender != null && gender != contact.getGender() ) {
-            contact.setGender( gender );
-        }
-        System.out.println( "Contact modifié avec succès!" );
-        dspMainMenu();
-    }
-
-    private static void storeCurrentBook() {
-
-        System.out.println( "======================================" );
-        System.out.println( "=== SAUVEGARDE DU CARNET D'ADRESSES ==" );
-        System.out.println( "======================================" );
-
-        Path bkpPath = Paths.get( BACKUPS_DIR );
-        if ( !Files.isDirectory( bkpPath ) ) {
-            try {
-                Files.createDirectory( bkpPath );
-            } catch ( IOException e ) {
-                e.printStackTrace();
-            }
-        }
-
-        String bkpFileName = new SimpleDateFormat( "yyyy-MM-dd-hh-mm-ss" ).format( new Date() ) + ".ser";
-        Path file = Paths.get( BACKUPS_DIR + bkpFileName );
-        try ( ObjectOutputStream oos = new ObjectOutputStream( Files.newOutputStream( file ) ) ) {
-            oos.writeObject( book );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        System.out.println("Sauvegarde terminée...");
-        dspMainMenu();
-    }
-
-    private static void restoreBackup() {
-
-        System.out.println( "======================================" );
-        System.out.println( "= RESTAURATION D'UN CARNET D'ADRESSES " );
-        System.out.println( "======================================" );
-
-        boolean first = true;
-        int response;
-        List<Path> paths = new ArrayList<>();
-
-        try ( DirectoryStream<Path> ds = Files.newDirectoryStream( Paths.get( BACKUPS_DIR ), "*.ser" ) ) {
-            for ( Path path : ds ) {
-                paths.add( path );
-            }
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        int size = paths.size();
-        if ( size > 0 ) {
-            System.out.println( "Choisissez la sauvegarde à restaurer ..." );
-            do {
-                if ( !first ) {
-                    System.out.println( "Mauvais choix... merci de recommencer !" );
-                }
-                for ( int i = 0; i < size; ++i ) {
-                    System.out.printf(" %d - %s%n", (i+1), paths.get(i).getFileName() );
-                }
-                System.out.print( "Votre choix : " );
-                try {
-                    response = sc.nextInt();
-                } catch ( InputMismatchException e ) {
-                    response = -1;
-                }
-                first = false;
-            } while ( response < 1 || response > size );
-
-            try ( ObjectInputStream ois = new ObjectInputStream( Files.newInputStream( paths.get(response-1) ) ) ) {
-                book = (Book) ois.readObject();
-            } catch ( IOException e ) {
-                e.printStackTrace();
-            } catch ( ClassNotFoundException e ) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Pas de sauvegarde trouvée...");
-        }
-        dspMainMenu();
-    }
-    private static void dspContacts( boolean dspMenu ) {
-
-        if ( dspMenu ) {
-            System.out.println( "======================================" );
-            System.out.println( "======== LISTE DE VOS CONTACTS =======" );
-            System.out.println( "======================================" );
-        }
-        List<Contact> list = book.getContacts();
-        for ( int i = 0, length = list.size(); i < length; ++i ) {
-            System.out.printf( "%d - %s%n", i + 1, list.get( i ) );
-        }
-        if ( dspMenu ) {
-            dspMainMenu();
-        }
-    }*/
     public static void modifSolde(Compte c, int typeModif) {
         //retrait c'est 1 de^pot c'est 2
-        IDAO<Integer, Operation> opDAO = new OperationDAO();
-        IDAO<Integer, Compte> cDAO = new CompteDAO();
         Operation operation = new Operation();
         if (typeModif == 1) {
             System.out.println("Indiquez le montant du retrait sur ce compte :");
@@ -294,12 +116,12 @@ public class App {
         }
         if (modifPossible) {
             try {
-                cDAO.update(c);
+                compteDao.update(c);
             } catch (SQLException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -307,9 +129,9 @@ public class App {
                 opDAO.create(operation);
             } catch (SQLException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch ( IOException e) {
                 e.printStackTrace();
             }
             System.out.println("Opération réussi");
@@ -365,10 +187,15 @@ public class App {
                 modifSolde(c, 1);
                 break;
             case 3:
+                System.out.println("A venir");
+                SegaBankMainMenu();
                 break;
             case 4:
+                System.out.println("A venir");
+                SegaBankMainMenu();
                 break;
             case 5:
+                exportCsv();
                 break;
             case 6:
                 SegaBankMainMenu();
@@ -416,11 +243,11 @@ public class App {
             type = -1;
             System.out.print("Type de compte invalide, vous allez etre rediriger vers l'accueil\n");
             SegaBankMainMenu();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             sc.nextLine();
@@ -449,11 +276,11 @@ public class App {
                 System.out.print("Mot de pass invalide, vous allez etre rediriger vers l'accueil\n");
                 SegaBankMainMenu();
             }
-        } catch (IOException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             sc.nextLine();
@@ -466,4 +293,29 @@ public class App {
     }
 
 
+    public static void exportCsv(){
+        int id;
+        Operation operation = new Operation();
+        System.out.print("Entrez l'id du compte dont vous voulez voir les opérations");
+        try {
+            id = sc.nextInt();
+            Operation op = opDAO.findBy(id);
+            if (op == null) {
+                System.out.print("id de compte invalide, vous allez etre rediriger vers l'accueil\n");
+                SegaBankMainMenu();
+            } else {
+                opDAO.find(id);
+                List<Operation> list = opDAO.find(id);;
+                operation.ExporteCSVOperation(list);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch (SQLException  e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            sc.nextLine();
+        }
+    }
 }
