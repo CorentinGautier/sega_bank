@@ -20,6 +20,6 @@ public class CompteEpargne extends Compte{
     }
 
     public void calculInteret(){
-        setSolde(getSolde() + (getSolde() * tauxInteret));
+        setSolde(getSolde() + (getSolde() * (tauxInteret/100)));
     }
 }

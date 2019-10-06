@@ -299,8 +299,15 @@ public class App {
 
     public static void imposerInteret(Compte c)  {
         if(c instanceof CompteEpargne){
-            System.out.println("Quel est le nouveau taux ?");
-            double taux =  sc.nextDouble();
+            int taux = 0;
+            System.out.println("Quel est le nouveau taux (entier %) ?");
+
+            try {
+                taux =  sc.nextInt();
+            }
+            catch (Exception e){
+                System.out.println("Vous devez entrer un entier comme pourcentage du taux");
+            }
             sc.nextLine();
             ((CompteEpargne) c).setTauxInteret(taux);
             ((CompteEpargne) c).calculInteret();

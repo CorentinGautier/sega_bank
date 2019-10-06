@@ -18,7 +18,7 @@ L'Application
 Celle-ci est séparé en deux menus distincts, le premier gérant la connexion et le deuxième la gestion d'un compte en particulier.
 Pour ce faire voici 3 comptes des 3 types différents (Simple, Epargne et Payant) pour tester les différentes propriétés appliquées :
  Compte Simple, entrer l'id 1
- Compte Epargne, entrer l'id *
- Compte Payant, entrer l'id *
+ Compte Epargne, entrer l'id 5
+ Compte Payant, entrer l'id 8
 
 Vous pourrez ensuite tester les différentes opérations ainsi que les différentes fonctionnalités applicables sur les comptes.
