@@ -7,19 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompteDAO implements IDAO<Integer, Compte>{
-    private static final String INSERT_QUERY = "INSERT INTO COMPTES(solde, agence) VALUES (?, ?)";
+    private static final String INSERT_QUERY = "INSERT INTO COMPTES(solde, agence, type) VALUES (?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE COMPTES SET solde = ?, agence = ? WHERE id = ?";
-    private static final String REMOVE_QUERY = "DELETE * FROM COMPTES WHERE id= ? ";
+    private static final String REMOVE_QUERY = "DELETE FROM COMPTES WHERE id= ? ";
     private static  final String FIND_QUERY = "SELECT * from COMPTES Where id = ?";
-    private static  final String FIND_All = "SELECT * from COMPTE";
+    private static  final String FIND_All = "SELECT * from COMPTES";
 
     @Override
     public void create(Compte object) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = PersistanceManager.getConnection();
         if(connection != null){
             try (PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, object.getId());
-                ps.setDouble(2, object.getSolde());
+                ps.setDouble(1, object.getSolde());
+                ps.setInt(2, object.getNumAgence());
+                if (object instanceof CompteSimple) {
+                    ps.setInt(3, 1);
+                } else if(object instanceof CompteEpargne) {
+                    ps.setInt(3, 2);
+                } else {
+                    ps.setInt(3, 3);
+                }
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
