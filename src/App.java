@@ -1,0 +1,308 @@
+import bo.*;
+import dal.CompteDAO;
+import dal.IDAO;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class App {
+
+
+    private static Scanner sc = new Scanner( System.in );
+    private static IDAO<Integer, Compte> compteDao = new CompteDAO();
+
+    public static void SegaBankMainMenu() {
+
+        int response;
+        boolean first = true;
+        do {
+            if ( !first ) {
+                System.out.println( "Mauvais choix... merci de recommencer !" );
+            }
+            System.out.println( "======================================" );
+            System.out.println( "============== SEGA BANK =============" );
+            System.out.println( "======================================" );
+            System.out.println( "1 - Se connecter à un compte" );
+            System.out.println( "2 - Creer un compte" );
+            System.out.println( "3 - Voir la liste des comptes (seulement pour les administrateurs)" );
+            System.out.println( "4 - Quitter" );
+            System.out.print( "Entrez votre choix : " );
+            try {
+                response = sc.nextInt();
+            } catch ( InputMismatchException e ) {
+                response = -1;
+            } finally {
+                sc.nextLine();
+            }
+            first = false;
+        } while ( response < 1 || response > 4 );
+
+        switch ( response ) {
+            case 1:
+                connect();
+                break;
+            /*case 2:
+                updateContact();
+                break;
+            case 3:
+                voirListeComptes();
+                break;*/
+        }
+    }
+
+    private static void connect() {
+        int id;
+        System.out.print( "Entrez votre identifiant : " );
+        Compte c;
+        try {
+            id = sc.nextInt();
+            c = compteDao.findBy(id);
+            if (c==null) {
+                System.out.print( "Identifiant invalide, vous allez etre rediriger vers l'accueil\n" );
+                SegaBankMainMenu();
+            } else {
+                gestionCompte(c);
+            }
+        } catch ( InputMismatchException e ) {
+            id = -1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            sc.nextLine();
+        }
+    }
+
+    /*private static Contact.Gender getGenderFromKeyboard( boolean mandatory ) {
+
+        boolean first = true;
+        int response;
+        do {
+            if ( !first ) {
+                System.out.println( "Mauvais choix... merci de recommencer !" );
+            }
+            System.out
+                    .printf( "Sélectionner le genre du contact %s...%n", (!mandatory ? "(Tapez Entrée pour passer)" : "") );
+            System.out.println( "1 - Masculin" );
+            System.out.println( "2 - Feminin" );
+            try {
+                response = sc.nextInt();
+            } catch ( InputMismatchException e ) {
+                response = -1;
+            } finally {
+                sc.nextLine();
+            }
+            first = false;
+        } while ( mandatory && (response < 1 || response > 2) );
+        if ( !mandatory && response != 1 && response != 2 ) return null;
+        else return Contact.Gender.values()[response - 1];
+    }
+
+    private static void createContact() {
+
+        System.out.println( "======================================" );
+        System.out.println( "======== CREATION D'UN CONTACT =======" );
+        System.out.println( "======================================" );
+        Contact contact = new Contact();
+        System.out.print( "Entrez le nom : " );
+        contact.setName( sc.nextLine() );
+        System.out.print( "Entrez l'email : " );
+        contact.setEmail( sc.nextLine() );
+        contact.setGender( getGenderFromKeyboard( true ) );
+        book.getContacts().add( contact );
+        System.out.println( "Contact créé avec succès!" );
+        dspMainMenu();
+    }
+
+    private static void updateContact() {
+
+        System.out.println( "======================================" );
+        System.out.println( "====== MODIFICATION D'UN CONTACT =====" );
+        System.out.println( "======================================" );
+        System.out.println( "Choisissez le contact à modifier ..." );
+        boolean first = true;
+        int response, size = book.getContacts().size();
+        do {
+            if ( !first ) {
+                System.out.println( "Mauvais choix... merci de recommencer !" );
+            }
+            dspContacts( false );
+            System.out.print( "Votre choix : " );
+            try {
+                response = sc.nextInt();
+            } catch ( InputMismatchException e ) {
+                response = -1;
+            } finally {
+                sc.nextLine();
+            }
+            first =false;
+        } while ( response < 1 || response > size );
+
+        Contact contact = book.getContacts().get( (response - 1) );
+        System.out.printf( "======== MODIFICATION DE (%s) %n =======", contact.getName() );
+
+        System.out.printf( "Entrez le nom (%s): ", contact.getName() );
+        String name = sc.nextLine();
+        if ( name != null && !name.isEmpty() ) {
+            contact.setName( name );
+        }
+        System.out.printf( "Entrez l'email (%s): ", contact.getEmail() );
+        String email = sc.nextLine();
+        if ( email != null && !email.isEmpty() ) {
+            contact.setEmail( email );
+        }
+        System.out.printf( "Entrez le genre (%s): ", contact.getGender().getLabel() );
+        Contact.Gender gender = getGenderFromKeyboard( false );
+        if ( gender != null && gender != contact.getGender() ) {
+            contact.setGender( gender );
+        }
+        System.out.println( "Contact modifié avec succès!" );
+        dspMainMenu();
+    }
+
+    private static void storeCurrentBook() {
+
+        System.out.println( "======================================" );
+        System.out.println( "=== SAUVEGARDE DU CARNET D'ADRESSES ==" );
+        System.out.println( "======================================" );
+
+        Path bkpPath = Paths.get( BACKUPS_DIR );
+        if ( !Files.isDirectory( bkpPath ) ) {
+            try {
+                Files.createDirectory( bkpPath );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        }
+
+        String bkpFileName = new SimpleDateFormat( "yyyy-MM-dd-hh-mm-ss" ).format( new Date() ) + ".ser";
+        Path file = Paths.get( BACKUPS_DIR + bkpFileName );
+        try ( ObjectOutputStream oos = new ObjectOutputStream( Files.newOutputStream( file ) ) ) {
+            oos.writeObject( book );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        System.out.println("Sauvegarde terminée...");
+        dspMainMenu();
+    }
+
+    private static void restoreBackup() {
+
+        System.out.println( "======================================" );
+        System.out.println( "= RESTAURATION D'UN CARNET D'ADRESSES " );
+        System.out.println( "======================================" );
+
+        boolean first = true;
+        int response;
+        List<Path> paths = new ArrayList<>();
+
+        try ( DirectoryStream<Path> ds = Files.newDirectoryStream( Paths.get( BACKUPS_DIR ), "*.ser" ) ) {
+            for ( Path path : ds ) {
+                paths.add( path );
+            }
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        int size = paths.size();
+        if ( size > 0 ) {
+            System.out.println( "Choisissez la sauvegarde à restaurer ..." );
+            do {
+                if ( !first ) {
+                    System.out.println( "Mauvais choix... merci de recommencer !" );
+                }
+                for ( int i = 0; i < size; ++i ) {
+                    System.out.printf(" %d - %s%n", (i+1), paths.get(i).getFileName() );
+                }
+                System.out.print( "Votre choix : " );
+                try {
+                    response = sc.nextInt();
+                } catch ( InputMismatchException e ) {
+                    response = -1;
+                }
+                first = false;
+            } while ( response < 1 || response > size );
+
+            try ( ObjectInputStream ois = new ObjectInputStream( Files.newInputStream( paths.get(response-1) ) ) ) {
+                book = (Book) ois.readObject();
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            } catch ( ClassNotFoundException e ) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Pas de sauvegarde trouvée...");
+        }
+        dspMainMenu();
+    }
+    private static void dspContacts( boolean dspMenu ) {
+
+        if ( dspMenu ) {
+            System.out.println( "======================================" );
+            System.out.println( "======== LISTE DE VOS CONTACTS =======" );
+            System.out.println( "======================================" );
+        }
+        List<Contact> list = book.getContacts();
+        for ( int i = 0, length = list.size(); i < length; ++i ) {
+            System.out.printf( "%d - %s%n", i + 1, list.get( i ) );
+        }
+        if ( dspMenu ) {
+            dspMainMenu();
+        }
+    }*/
+
+    public static void gestionCompte(Compte c) {
+        System.out.println( "======================================" );
+        System.out.printf( "===== COMPTE NUMERO %s \n", c.getId() );
+        System.out.printf( "===== SOLDE : %s \n", c.getSolde() );
+        System.out.printf( "===== AGENCE : %s \n", c.getNumAgence() );
+        if(c instanceof CompteSimple) {
+            System.out.println( "===== TYPE : Compte simple" );
+        } else if(c instanceof CompteEpargne) {
+            System.out.println( "===== TYPE : Compte epargne" );
+        } else {
+            System.out.println( "===== TYPE : Compte payant" );
+        }
+        System.out.println( "======================================" );
+        System.out.println( "1 - Se connecter à un compte" );
+        System.out.println( "2 - Se connecter à un compte" );
+        System.out.println( "3 - Se connecter à un compte" );
+        System.out.println( "4 - Quitter" );
+        System.out.print( "Entrez votre choix : " );
+    }
+
+    public static void voirListeComptes() {
+        System.out.println( "======================================" );
+        System.out.printf( "===== COMPTE NUMERO %s \n", c.getId() );
+        System.out.printf( "===== SOLDE : %s \n", c.getSolde() );
+        System.out.printf( "===== AGENCE : %s \n", c.getNumAgence() );
+        if(c instanceof CompteSimple) {
+            System.out.println( "===== TYPE : Compte simple" );
+        } else if(c instanceof CompteEpargne) {
+            System.out.println( "===== TYPE : Compte epargne" );
+        } else {
+            System.out.println( "===== TYPE : Compte payant" );
+        }
+        System.out.println( "======================================" );
+        System.out.println( "1 - Se connecter à un compte" );
+        System.out.println( "2 - Se connecter à un compte" );
+        System.out.println( "3 - Se connecter à un compte" );
+        System.out.println( "4 - Quitter" );
+        System.out.print( "Entrez votre choix : " );
+    }
+
+    public static void main( String... args ) {
+
+        SegaBankMainMenu();
+    }
+}

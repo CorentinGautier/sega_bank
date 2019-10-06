@@ -9,22 +9,22 @@ public abstract class Compte {
         return "Compte{" +
                 "id=" + id +
                 ", solde=" + solde +
-                ", operations=" + operations +
+                ", Agence=" + numAgence +
                 '}';
     }
 
     private int id;
     private double solde;
-    List<Operation> operations;
+    private int numAgence;
 
     public Compte(){
 
     }
 
-    public Compte(int id, double solde) {
+    public Compte(int id, double solde, int numAgence) {
         this.id = id;
         this.solde = solde;
-        operations = new ArrayList();
+        numAgence = numAgence;
     }
 
     public void versement(double montant){
@@ -48,5 +48,13 @@ public abstract class Compte {
 
     public void setSolde(double solde) {
         this.solde = solde;
+    }
+
+    public int getNumAgence() {
+        return numAgence;
+    }
+
+    public void setNumAgence(int numAgence) {
+        this.numAgence = numAgence;
     }
 }
