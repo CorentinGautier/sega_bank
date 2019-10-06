@@ -11,12 +11,14 @@ public class ComptePayant extends Compte{
     }
 
     @Override
-    public void versement(double montant) {
+    public boolean versement(double montant) {
         setSolde((getSolde()+montant)-montant*COMMISSION);
+        return true;
     }
 
     @Override
-    public void retrait(double montant) {
+    public boolean retrait(double montant) {
         setSolde((getSolde()-montant)-montant*COMMISSION);
+        return true;
     }
 }

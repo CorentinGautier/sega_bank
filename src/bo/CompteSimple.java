@@ -12,12 +12,14 @@ public class CompteSimple extends Compte{
     }
 
     @Override
-    public void retrait(double montant) {
+    public boolean retrait(double montant) {
         if((getSolde() - montant) < decouvert){
             //gérer le problème
+            return false;
         }
         else{
             setSolde(getSolde()-montant);
+            return true;
         }
     }
 
