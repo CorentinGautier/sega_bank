@@ -1,16 +1,12 @@
 package bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Compte {
     @Override
     public String toString() {
-        return "Compte{" +
+        return "Compte : " +
                 "id=" + id +
                 ", solde=" + solde +
-                ", Agence=" + numAgence +
-                '}';
+                ", Agence=" + numAgence;
     }
 
     private int id;
@@ -24,7 +20,7 @@ public abstract class Compte {
     public Compte(int id, double solde, int numAgence) {
         this.id = id;
         this.solde = solde;
-        numAgence = numAgence;
+        this.numAgence = numAgence;
     }
 
     public boolean versement(double montant){

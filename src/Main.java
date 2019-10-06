@@ -17,7 +17,7 @@ public class Main {
     private static IDAO<Integer, Operation> operationDAO = new OperationDAO();
     private static Scanner sc = new Scanner( System.in );
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
-
+/*
         IDAO<Integer, Compte> dao = new CompteDAO();
         Compte compte =  new CompteEpargne(1, 5000, 266);
         int response;
@@ -71,17 +71,16 @@ public class Main {
                 }
                 break;
         }
+*/
 
-        /*
               IDAO<Integer, Operation> dao = new OperationDAO();
-        IDAO<Integer, Operation> dao = new OperationDAO();
         Operation operation = new Operation();
         dao.find(4);
        //System.out.println(    dao.find(4));
         List<Operation> list =  dao.find(4);;
         operation.ExporteCSVOperation(list);
 
-
+    /*
          //creation d'une agence ------------------ OK
         IDAO<Integer, Agence> dao = new AgenceDAO();
         Agence agence = new Agence( 7, 75001, "rue de la muerta" );
