@@ -45,7 +45,8 @@ public class Operation implements Serializable {
             for(int i= 0; i<listOperation.size(); i++){
                 Operation op = listOperation.get(i);
                 String type;
-                if(getType() == 1){
+                System.out.println(getType());
+                if(getType() == Integer.parseInt("1")){
                     type = "retrait";
                 }else{
                     type = "depot";

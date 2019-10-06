@@ -168,6 +168,9 @@ public class App {
         System.out.println("4 - Modifier agence");
         System.out.println("5 - Exporter les opérations d'un compte ");
         System.out.println("6 - Deconnexion");
+        if(c instanceof  CompteEpargne){
+            System.out.println("7 - Imposer un taux d'interet");
+        }
         System.out.print("Entrez votre choix : ");
         int choix = 0;
         do {
@@ -177,7 +180,7 @@ public class App {
             } catch (Exception e) {
                 System.out.println("Veuillez entrer un chiffre");
             }
-        } while (choix < 0 && choix > 6);
+        } while (choix < 0 && choix > 7);
 
         switch (choix) {
             case 1:
@@ -200,9 +203,11 @@ public class App {
             case 6:
                 SegaBankMainMenu();
                 break;
-
+            case 7:
+             imposerInteret( c);
+                SegaBankMainMenu();
+                break;
         }
-
     }
 
     private static void creerCompte() {
@@ -299,23 +304,35 @@ public class App {
         System.out.print("Entrez l'id du compte dont vous voulez voir les opérations");
         try {
             id = sc.nextInt();
-            Operation op = opDAO.findBy(id);
-            if (op == null) {
-                System.out.print("id de compte invalide, vous allez etre rediriger vers l'accueil\n");
-                SegaBankMainMenu();
-            } else {
-                opDAO.find(id);
-                List<Operation> list = opDAO.find(id);;
+                List<Operation> list = opDAO.find(id);
                 operation.ExporteCSVOperation(list);
-            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }catch (SQLException  e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            sc.nextLine();
         }
+    }
+
+    public static void imposerInteret(Compte c)  {
+        if(c instanceof CompteEpargne){
+            System.out.println("Quel est le nouveau taux ?");
+          int taux =  sc.nextInt();
+          ((CompteEpargne) c).setTauxInteret(taux);
+            ((CompteEpargne) c).calculInteret();
+            try {
+                compteDao.update(c);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("non autorisé pour votre type de compte");
+        }
+        gestionCompte(c);
     }
 }

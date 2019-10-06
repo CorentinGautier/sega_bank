@@ -21,7 +21,7 @@ CREATE TABLE operations
     id INT PRIMARY KEY NOT NULL auto_increment,
     agence INT NOT NULL,
     compte INT NOT NULL,
-    type INT NOT NULL,
+    type_op INT NOT NULL,
     montant FLOAT NOT NULL,
     date_action TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_code_agence

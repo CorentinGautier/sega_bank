@@ -9,8 +9,8 @@ import java.util.List;
 
 public class OperationDAO implements IDAO<Integer, Operation>{
 
-        private static final String INSERT_QUERY = "INSERT INTO OPERATIONS(agence, compte, type, montant) VALUES (?, ?, ? , ? )";
-        private static final String UPDATE_QUERY = "UPDATE OPERATIONS SET agence = ?, compte = ?, type = ?, montant = ? WHERE id = ?";
+        private static final String INSERT_QUERY = "INSERT INTO OPERATIONS(agence, compte, type_op, montant) VALUES (?, ?, ? , ? )";
+        private static final String UPDATE_QUERY = "UPDATE OPERATIONS SET agence = ?, compte = ?, type_op = ?, montant = ? WHERE id = ?";
         private static final String REMOVE_QUERY = "DELETE FROM OPERATIONS WHERE id= ? ";
         private static  final String FIND_QUERY = "SELECT * FROM OPERATIONS WHERE compte = ?";
         private static final String FINDALL_QUERY = "SELECT * FROM OPERATIONS";
@@ -78,6 +78,7 @@ public class OperationDAO implements IDAO<Integer, Operation>{
                     while(rs.next()) {
                         Operation operation = new Operation();
                         operation.setId(rs.getInt("id"));
+                        operation.setType(rs.getInt("type_op"));
                         operation.setIdAgence((rs.getInt("agence")));
                         operation.setIdCompte(rs.getInt("compte"));
                         operation.setMontant(rs.getDouble("montant"));
@@ -102,7 +103,7 @@ public class OperationDAO implements IDAO<Integer, Operation>{
                             operation.setId(rs.getInt("id"));
                             operation.setIdAgence(rs.getInt("agence"));
                             operation.setIdCompte(rs.getInt("compte"));
-                            operation.setType(rs.getInt("type"));
+                            operation.setType(rs.getInt("type_op"));
                             operation.setMontant(rs.getDouble("montant"));
                             list.add(operation);
                         }
