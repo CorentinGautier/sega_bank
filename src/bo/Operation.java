@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Operation implements Serializable {
-private static final String BACKUPS_DIR = "./ressources/backups/";
+    private static final String BACKUPS_DIR = "./ressources/backups/";
     private int id;
 
     public int getId() {
@@ -30,8 +30,6 @@ private static final String BACKUPS_DIR = "./ressources/backups/";
     }
 
     public void ExporteCSVOperation(List<Operation> listOperation) throws FileNotFoundException {
-        System.out.println(" ------ sauvegarde ------- ");
-        System.out.println(listOperation);
         Path BkpPath = Paths.get(BACKUPS_DIR);
         if (!Files.isDirectory(BkpPath)) {
             try {
@@ -48,13 +46,12 @@ private static final String BACKUPS_DIR = "./ressources/backups/";
             for(int i= 0; i<listOperation.size(); i++){
                 System.out.println(listOperation.size()); // retourne 2
                 Operation op = listOperation.get(i);
-               oss.write(String.format("%d;%d;%d;%d;%f\n",op.getId(),op.getIdAgence(),op.getIdCompte(),op.getType(),op.getMontant()).getBytes());
-                 }
+                oss.write(String.format("%d;%d;%d;%d;%f\n",op.getId(),op.getIdAgence(),op.getIdCompte(),op.getType(),op.getMontant()).getBytes());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("sauvegarde terminée");
-
     }
 
     @Override
