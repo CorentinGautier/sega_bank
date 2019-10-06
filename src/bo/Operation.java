@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Operation implements Serializable {
-    private static final String BACKUPS_DIR = "./ressources/backups/";
+    private static final String BACKUPS_DIR = "./ressources/exportCSV/";
     private int id;
 
     public int getId() {
@@ -42,16 +42,20 @@ public class Operation implements Serializable {
         String bkpFileName = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").format(new Date()) + ".csv";
         Path file = Paths.get(BACKUPS_DIR + "Operations_"+bkpFileName);
         try (FileOutputStream oss = new FileOutputStream(file.toFile())) {
-            oss.write(String.format("%s;%s;%s;%s;%s\n","id","idAgence","idCompte","type","montant").getBytes());
+            oss.write(String.format("%s;%s;%s;%s;%s\n","id de l operation","idAgence","idCompte","Type de l operation","Montant").getBytes());
             for(int i= 0; i<listOperation.size(); i++){
-                System.out.println(listOperation.size()); // retourne 2
                 Operation op = listOperation.get(i);
-                oss.write(String.format("%d;%d;%d;%d;%f\n",op.getId(),op.getIdAgence(),op.getIdCompte(),op.getType(),op.getMontant()).getBytes());
+                String type;
+                if(getType() == 1){
+                    type = "retrait";
+                }else{
+                    type = "depot";
+                }
+                oss.write(String.format("%d;%d;%d;%s;%f\n",op.getId(),op.getIdAgence(),op.getIdCompte(),type,op.getMontant()).getBytes());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("sauvegarde terminée");
     }
 
     @Override

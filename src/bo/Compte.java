@@ -1,8 +1,5 @@
 package bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Compte {
     @Override
     public String toString() {
