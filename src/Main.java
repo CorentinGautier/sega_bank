@@ -8,6 +8,7 @@ import dal.OperationDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,8 +16,15 @@ public class Main {
 
     private static IDAO<Integer, Operation> operationDAO = new OperationDAO();
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
+        IDAO<Integer, Operation> dao = new OperationDAO();
+        Operation operation = new Operation();
+        dao.find(4);
+       //System.out.println(    dao.find(4));
+        ArrayList<Operation> list = (ArrayList<Operation>)     dao.find(4);;
+        operation.ExporteCSVOperation(list);
 
-        //creation d'une agence ------------------ OK
+
+        /*  //creation d'une agence ------------------ OK
         IDAO<Integer, Agence> dao = new AgenceDAO();
         Agence agence = new Agence( 7, 75001, "rue de la muerta" );
         Compte compte = new CompteSimple(1,0,agence.getCode());
@@ -44,7 +52,7 @@ public class Main {
 
 
 
-        /*
+
         try {
             dao.create(agence);
             System.out.println(agence.toString());
@@ -60,8 +68,11 @@ public class Main {
         System.out.println( dao.findBy(4));
         //findAll -------------         OK
         System.out.println( dao.findAll());
-        */
+
         //remove ------- ok
         dao.remove(agence);
+         */
+
+
     }
 }

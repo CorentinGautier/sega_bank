@@ -1,6 +1,6 @@
 package bo;
 
-public class Agence {
+public class Agence{
     private int id;
     private int code;
     private String adresse;
