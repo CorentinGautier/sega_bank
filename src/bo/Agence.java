@@ -10,6 +10,12 @@ public class Agence {
         this.adresse = adresse;
     }
 
+    public Agence(int id, int code, String adresse) {
+        this.id = id;
+        this.code = code;
+        this.adresse = adresse;
+    }
+
     public Agence() {
     }
 
