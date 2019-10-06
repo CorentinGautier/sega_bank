@@ -327,6 +327,7 @@ public class App {
                     }
                     
                 }
+                System.out.print( "Appuyez sur entrer pour revenir au menu principal\n" );
             } else {
                 System.out.print( "Mot de pass invalide, vous allez etre rediriger vers l'accueil\n" );
                 SegaBankMainMenu();
@@ -340,6 +341,7 @@ public class App {
         } finally {
             sc.nextLine();
         }
+        SegaBankMainMenu();
     }
 
     public static void main( String... args ) {
