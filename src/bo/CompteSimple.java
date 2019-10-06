@@ -1,20 +1,18 @@
 package bo;
 
 public class CompteSimple extends Compte{
-    private int decouvert;
+    private int decouvert = -150;
 
     public CompteSimple(){
 
     }
     public CompteSimple(int id, double solde, int numAgence) {
         super(id, solde, numAgence);
-        this.decouvert = decouvert;
     }
 
     @Override
     public boolean retrait(double montant) {
         if((getSolde() - montant) < decouvert){
-            //gérer le problème
             return false;
         }
         else{
